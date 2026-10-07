@@ -1,0 +1,18 @@
+seed: 42
+data_path: data/raw/extention_of_Z-Alizadeh_sani_dataset.xlsx
+sheet: "Sheet 1 - Table 1"        # the other sheet is empty
+
+# target name -> (answer column, value that means "positive")
+targets:
+  CAD: {column: Cath, positive: CAD}
+  LAD: {column: LAD,  positive: Stenotic}
+  LCX: {column: LCX,  positive: Stenotic}
+  RCA: {column: RCA,  positive: Stenotic}
+
+leakage_columns: [LAD, LCX, RCA, Cath]   # never allowed in X
+drop_columns: ["Exertional CP"]          # constant column (all "N")
+
+continuous: [Age, Weight, Length, BMI, BP, PR, FBS, CR, TG, LDL, HDL, BUN,
+             ESR, HB, K, Na, WBC, Lymph, Neut, PLT, EF-TTE]
+
+cv: {n_splits: 5, n_repeats: 5}

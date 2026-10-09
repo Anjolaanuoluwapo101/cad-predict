@@ -1,0 +1,26 @@
+{
+  "CAD": {
+    "model": "rf",
+    "threshold": 0.7587,
+    "calibration_slope": 2.23,
+    "calibration_intercept": -0.852
+  },
+  "LAD": {
+    "model": "rf",
+    "threshold": 0.5289,
+    "calibration_slope": 1.814,
+    "calibration_intercept": -0.234
+  },
+  "LCX": {
+    "model": "rf",
+    "threshold": 0.3972,
+    "calibration_slope": 1.421,
+    "calibration_intercept": 0.183
+  },
+  "RCA": {
+    "model": "logreg",
+    "threshold": 0.3376,
+    "calibration_slope": 0.497,
+    "calibration_intercept": -0.427
+  }
+}

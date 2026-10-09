@@ -35,7 +35,9 @@ def encode(df, cfg):
                 errors="ignore").copy()
 
     # Y/N columns -> 1/0
-    for c in X.columns:
+    # BBB / VHD / Sex are handled below. They must be skipped here: for a SINGLE
+    # patient with BBB = "N" (or VHD = "N") the column would look like Y/N text.
+    for c in X.columns.difference(["Sex", "BBB", "VHD"]):
         if not pd.api.types.is_numeric_dtype(X[c]) and set(X[c].unique()) <= {"Y", "N"}:
             X[c] = (X[c] == "Y").astype(int)
 
@@ -47,6 +49,10 @@ def encode(df, cfg):
     assert X["VHD"].notna().all(), "unmapped VHD spelling"
 
     # BBB has no natural order -> indicator flags, "N" is the reference level.
+    # Fixed categories (not "whatever appears in the data") so a SINGLE patient
+    # still produces both flag columns.
+    X["BBB"] = pd.Categorical(X["BBB"], categories=["N", "LBBB", "RBBB"])
+    assert X["BBB"].notna().all(), "unknown BBB value"
     X = pd.get_dummies(X, columns=["BBB"], dtype=int).drop(columns="BBB_N")
 
     bad = X.select_dtypes(exclude="number").columns.tolist()

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "CAD": { "probability": 0.9999, "status": "positive", "borderline_from": 0.6828, "threshold": 0.7587, "colour_score": 0.9999, "model": "rf", "explanation_units": "probability", "contributions": [] },
+    "LAD": { "probability": 0.9898, "status": "positive", "borderline_from": 0.476, "threshold": 0.5289, "colour_score": 0.9892, "model": "rf", "explanation_units": "probability", "contributions": [] },
+    "LCX": { "probability": 0.6603, "status": "positive", "borderline_from": 0.3575, "threshold": 0.3972, "colour_score": 0.7182, "model": "rf", "explanation_units": "probability", "contributions": [] },
+    "RCA": { "probability": 0.5143, "status": "positive", "borderline_from": 0.2701, "threshold": 0.3376, "colour_score": 0.6334, "model": "logreg", "explanation_units": "log-odds", "contributions": [] }
+  },
+  "defaults_used": [], "warnings": [], "derived": { "BMI": 27.72, "bmi_over_25": true },
+  "disclaimer": "Decision support and educational use only. Predictions are not a substitute for formal diagnostic imaging or clinical judgement.",
+  "model_info": {}
+}

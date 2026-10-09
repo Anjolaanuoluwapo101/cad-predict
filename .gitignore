@@ -2,3 +2,11 @@
 __pycache__/
 .ipynb_checkpoints/
 .pytest_cache/
+*/notebooks/
+/notebooks/
+*/node_modules/
+CAD_steps_1-3_local_guide.md
+codebase-snapshot.zip
+README_STEP4.md
+README_STEP5A.md
+required_fields_test.csv

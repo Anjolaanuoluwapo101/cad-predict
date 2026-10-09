@@ -1,0 +1,5 @@
+target,model,auc_mean,auc_sd,margin_over_runner_up
+CAD,rf,0.9364,0.0294,0.0077
+LAD,rf,0.8506,0.0451,0.0249
+LCX,rf,0.7284,0.0593,0.0034
+RCA,logreg,0.7221,0.0568,0.0103

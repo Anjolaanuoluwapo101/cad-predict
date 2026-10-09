@@ -1,0 +1,24 @@
+.stage {
+  position: relative; width: 100%; height: 100%; min-height: 420px; overflow: hidden;
+  border-radius: var(--r-l); border: 1px solid var(--line);
+  background: radial-gradient(ellipse 70% 60% at 50% 42%, var(--stage-a), var(--stage-b));
+}
+.stage-canvas { position: absolute; inset: 0; }
+.stage canvas { display: block; touch-action: none; }
+.stage-tools { position: absolute; top: 12px; right: 12px; z-index: 40; }
+.stage-btn { display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px 7px 10px; background: color-mix(in srgb, var(--surface) 86%, transparent); backdrop-filter: blur(8px); border: 1px solid var(--line-strong); border-radius: var(--r-pill); color: var(--text-2); font-size: var(--t-s); box-shadow: var(--shadow-1); transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.stage-btn:hover { border-color: var(--accent); color: var(--text); }
+.stage-loading { color: var(--text-2); font-size: var(--t-s); white-space: nowrap; }
+.vlabel { transition: opacity 120ms linear; }
+.vlabel button {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 9px; white-space: nowrap;
+  background: color-mix(in srgb, var(--surface) 84%, transparent); backdrop-filter: blur(8px);
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+  color: var(--text); font-size: var(--t-s); box-shadow: var(--shadow-1);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.vlabel button:hover { border-color: var(--accent); }
+.vlabel button.is-active { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+.vlabel .dot { width: 9px; height: 9px; border-radius: 50%; }
+.vlabel .code { font-weight: 600; }
+.vlabel .val { color: var(--text-2); }

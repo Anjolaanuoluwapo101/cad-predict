@@ -13,14 +13,12 @@ import time
 import numpy as np
 import pandas as pd
 from sklearn.base import clone
-from sklearn.dummy import DummyClassifier
-from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, brier_score_loss, f1_score,
                              precision_score, recall_score, roc_auc_score)
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.pipeline import Pipeline
 
+from src.models import make_models
 from src.preprocess import ROOT, build_prep, get_xy, load_config, load_data
 
 ap = argparse.ArgumentParser()
@@ -34,13 +32,7 @@ df = load_data(cfg)
 n_splits, n_repeats = (2, 2) if args.quick else (cfg["cv"]["n_splits"], cfg["cv"]["n_repeats"])
 cv = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats, random_state=SEED)
 
-models = {
-    "logreg": LogisticRegression(class_weight="balanced", max_iter=5000),
-    "rf": RandomForestClassifier(n_estimators=200 if args.quick else 500,
-                                 class_weight="balanced", random_state=SEED, n_jobs=-1),
-    "hgb": HistGradientBoostingClassifier(class_weight="balanced", random_state=SEED),
-    "baseline": DummyClassifier(strategy="prior"),
-}
+models = make_models(SEED, quick=args.quick)
 
 rows, oof = [], []
 t0 = time.time()

@@ -11,6 +11,10 @@ export function useIntake(features) {
   const setUnit = useCallback((name, mode) => setUnits((u) => ({ ...u, [name]: mode })), []);
   const setMany = useCallback((obj) => setValues((s) => ({ ...s, ...obj })), []);
   const reset = useCallback(() => { setValues({}); setUnits({}); }, []);
+  const restore = useCallback((nextValues, nextUnits) => {
+    setValues({ ...(nextValues ?? {}) });
+    setUnits({ ...(nextUnits ?? {}) });
+  }, []);
 
   return useMemo(() => {
     const required = fields.filter((f) => f.primary);
@@ -18,9 +22,9 @@ export function useIntake(features) {
     const problems = {};
     fields.forEach((f) => { const p = hardProblem(f, values[f.name]); if (p) problems[f.name] = p; });
     return {
-      values, set, clear, setMany, reset, units, setUnit, required, missing, problems,
+      values, set, clear, setMany, reset, restore, units, setUnit, required, missing, problems,
       ready: missing.length === 0 && Object.keys(problems).length === 0,
       payload: toPayload(fields, values),
     };
-  }, [fields, values, units, set, clear, setMany, reset, setUnit]);
+  }, [fields, values, units, set, clear, setMany, reset, restore, setUnit]);
 }

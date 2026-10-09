@@ -11,7 +11,7 @@ const TABS = [['overview', 'Overview'], ['why', 'Why this score'], ['measures', 
 const Warn = () => (<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10.3 3.9L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" /><path d="M12 9v4M12 17h.01" /></svg>);
 
 // The assessment dashboard: overview cards, SHAP explanation, measurements. The disclaimer never scrolls away.
-export default function Results({ data, labels, fields, selected, onSelect, visible, onVisible, onSolo, onShowAll, dim, onDim, onEdit, onNew }) {
+export default function Results({ data, labels, fields, selected, onSelect, visible, onVisible, onSolo, onShowAll, dim, onDim, onEdit, onNew, onSave, saved }) {
   const [tab, setTab] = useState('overview');
   const target = selected ?? 'CAD';
   const t = data.targets[target];
@@ -27,6 +27,10 @@ export default function Results({ data, labels, fields, selected, onSelect, visi
       <div className="res-top">
         <h2>Assessment</h2>
         <span className="res-actions">
+          <button type="button" className={`save-btn ${saved ? 'is-saved' : ''}`} onClick={onSave} disabled={saved}
+            title={saved ? 'This run is saved in History' : 'Save these inputs and results to History'}>
+            {saved ? 'Saved ✓' : 'Save run'}
+          </button>
           <button type="button" className="link" onClick={onEdit}>Edit inputs</button>
           <ConfirmButton className="link" label="New patient" confirmLabel="Clear everything?" onConfirm={onNew} />
         </span>

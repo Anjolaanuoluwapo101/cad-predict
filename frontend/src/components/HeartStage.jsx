@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { riskColour, formatProb, statusLabel, TARGETS } from '../lib/risk';
 import './HeartStage.css';
 
-const MODEL = '/models/heart_groningen_split.glb';
+const MODEL = '/models/heart_bp3d.glb';
 const VESSELS = ['LAD', 'LCX', 'RCA'];
 const NEUTRAL = '#9AA3AB';
 const TISSUE = {
@@ -14,11 +14,11 @@ const TISSUE = {
   AV_valves: '#E6DAC8', Ligament: '#CBBDA6', LeftMain: '#8A949C',
 };
 const FIT = 3;             // the model is scaled so its longest side is this many units
-const OVERVIEW_DIST = 7;   // camera distance for the whole heart
+const OVERVIEW_DIST = 8.5;   // camera distance for the whole heart
 const VESSEL_DIST = 2.4;   // camera distance when a vessel is selected
 
 // Once the sliders in the dev panel show the right orientation, paste the three numbers here (degrees).
-export const DEFAULT_ROTATION = [0, 0, 0];
+export const DEFAULT_ROTATION = [-90, 0, 0];
 
 const want = new THREE.Color();
 const tint = new THREE.Color();
@@ -116,7 +116,7 @@ function Heart({ results, selected, onSelect, hovered, onHover, rotation, visibl
       parts[o.name] = o;
     });
     scene.updateMatrixWorld(true);
-    const box = new THREE.Box3().setFromObject(scene);
+    const box = new THREE.Box3().setFromObject(parts.Heart_body ?? scene);
     const size = box.getSize(new THREE.Vector3());
     const centre = box.getCenter(new THREE.Vector3());
     const scale = FIT / Math.max(size.x, size.y, size.z);
@@ -209,13 +209,12 @@ export default function HeartStage({ results = null, selected = null, onSelect =
           minDistance={1.6} maxDistance={11} autoRotate={!selected} autoRotateSpeed={0.5} />
       </Canvas>
       </div>
-      <div className="stage-tools">
+      <small className="stage-credit">Anatomy: BodyParts3D, &copy; DBCLS, CC BY-SA 2.1 JP</small>
         <button type="button" className="stage-btn" onClick={reset} title="Back to the front view and clear the selection" aria-label="Reset the heart view">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" /></svg>
           Reset view
         </button>
       </div>
-    </div>
   );
 }
 

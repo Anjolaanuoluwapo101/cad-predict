@@ -10,3 +10,5 @@ codebase-snapshot.zip
 README_STEP4.md
 README_STEP5A.md
 required_fields_test.csv
+*.env.local
+.env.local

@@ -22,3 +22,5 @@
 .vlabel .dot { width: 9px; height: 9px; border-radius: 50%; }
 .vlabel .code { font-weight: 600; }
 .vlabel .val { color: var(--text-2); }
+
+.stage-credit { position: absolute; left: 14px; bottom: 10px; z-index: 2; color: var(--text-3); font-size: 11px; pointer-events: none; }

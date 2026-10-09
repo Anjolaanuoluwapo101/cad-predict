@@ -30,7 +30,7 @@ export const STATUS = {
 };
 export const statusLabel = (s) => STATUS[s] ?? 'Not determined';
 
-// `mesh` is the node name inside heart_groningen_split.glb. CAD is the overall result, not a vessel.
+// `mesh` is the node name inside heart_bp3d.glb. CAD is the overall result, not a vessel.
 export const TARGETS = {
   CAD: { name: 'Coronary artery disease', short: 'Overall', mesh: null },
   LAD: { name: 'Left anterior descending', short: 'LAD', mesh: 'LAD' },

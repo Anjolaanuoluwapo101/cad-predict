@@ -10,6 +10,7 @@ ARG VITE_GROQ_MODEL=""
 # Throwaway-only: a baked key ships inside the public bundle, readable by anyone
 # in devtools. Prefer the HEARTLY_GROQ_KEY runtime env (see entrypoint) instead.
 ARG VITE_GROQ_API_KEY=""
+ARG VITE_GROQ_MODEL="openai/gpt-oss-20b"
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY frontend/ ./

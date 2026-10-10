@@ -14,11 +14,13 @@ import logging
 import os
 import threading
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 from fastapi import Body, FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from src.predict import DISCLAIMER, PatientInputError, Predictor
 
@@ -92,3 +94,10 @@ def predict(request: Request,
     except Exception:                                              # never leak internals
         log.exception("prediction failed")
         return JSONResponse(status_code=500, content={"errors": ["Prediction failed on the server."]})
+
+
+# Single-service deploys (Docker): serve the built frontend. Registered last so the
+# API routes above always win. Skipped in local dev when no build exists.
+_DIST = Path(__file__).resolve().parents[1] / "frontend" / "dist"
+if _DIST.is_dir():
+    app.mount("/", StaticFiles(directory=_DIST, html=True), name="frontend")

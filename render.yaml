@@ -1,0 +1,11 @@
+# Render blueprint: one Docker web service serving API + frontend on one URL.
+# Deploy via "New > Blueprint" pointed at the repo, or `render blueprint launch`.
+services:
+  - type: web
+    name: cad-risk
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    # Same-origin serving, so no CORS setup is needed. If the frontend is ever
+    # hosted on a different origin, add CAD_ALLOWED_ORIGINS here.

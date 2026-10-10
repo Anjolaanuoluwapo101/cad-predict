@@ -14,11 +14,18 @@ export class GroqError extends Error {
 }
 
 export function getKey() {
+  // Deploy-provided key first (entrypoint-injected at container boot, rotatable
+  // without a rebuild), then the build-baked key, then the visitor's pasted key.
+  // All three are public-by-design: this is a browser key, so keep it throwaway.
+  const runtime = typeof window !== 'undefined' ? window.__HEARTLY_KEY : '';
+  if (runtime) return runtime;
   const env = import.meta.env.VITE_GROQ_API_KEY;
   if (env) return env;
   try { return sessionStorage.getItem(STORE) || ''; } catch { return ''; }
 }
-export const keyFromEnv = () => Boolean(import.meta.env.VITE_GROQ_API_KEY);
+export const keyFromEnv = () =>
+  Boolean(import.meta.env.VITE_GROQ_API_KEY ||
+    (typeof window !== 'undefined' && window.__HEARTLY_KEY));
 export function saveKey(k) { try { if (k) sessionStorage.setItem(STORE, k.trim()); else sessionStorage.removeItem(STORE); } catch { /* private mode: key just won't persist */ } }
 
 // Model quality figures come from this project's cross-validation (303 patients, one centre).

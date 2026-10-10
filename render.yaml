@@ -7,5 +7,12 @@ services:
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     autoDeploy: true
+    envVars:
+      # Throwaway Groq key for Heartly (public-by-design: every visitor's browser
+      # receives it). The entrypoint injects it into the served page at boot, so
+      # rotating it is a dashboard edit + redeploy, no rebuild of the code.
+      # Leave it unset and visitors paste their own key instead.
+      - key: HEARTLY_GROQ_KEY
+        sync: false
     # Same-origin serving, so no CORS setup is needed. If the frontend is ever
     # hosted on a different origin, add CAD_ALLOWED_ORIGINS here.

@@ -1,4 +1,5 @@
-const BASE = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000';
+// Same-origin by default (single-service deploys); override with VITE_API_URL in local dev.
+const BASE = import.meta.env.VITE_API_URL ?? '';
 
 export class ApiError extends Error {
   constructor(status, messages) {
@@ -27,7 +28,9 @@ async function request(path, options) {
   try {
     res = await fetch(`${BASE}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options });
   } catch {
-    throw new ApiError(0, [`Cannot reach the API at ${BASE}. Check that uvicorn is running.`]);
+    throw new ApiError(0, [BASE
+      ? `Cannot reach the API at ${BASE}. Check that uvicorn is running.`
+      : 'Cannot reach the API. Check that the server is running and reload.']);
   }
   const body = await res.json().catch(() => null);
   if (!res.ok) {

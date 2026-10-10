@@ -4,6 +4,12 @@
 # ---- Stage 1: frontend build ----
 FROM node:22-slim AS web
 WORKDIR /build/frontend
+# Vite reads these at BUILD time and bakes them into the JS bundle.
+ARG VITE_API_URL=""
+ARG VITE_GROQ_MODEL=""
+# Throwaway-only: a baked key ships inside the public bundle, readable by anyone
+# in devtools. Prefer the HEARTLY_GROQ_KEY runtime env (see entrypoint) instead.
+ARG VITE_GROQ_API_KEY=""
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY frontend/ ./
@@ -23,6 +29,8 @@ COPY api/ ./api/
 COPY models/ ./models/
 COPY data/raw/ ./data/raw/
 COPY --from=web /build/frontend/dist ./frontend/dist
+COPY entrypoint.sh ./
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 8000
-CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
+CMD ["./entrypoint.sh"]

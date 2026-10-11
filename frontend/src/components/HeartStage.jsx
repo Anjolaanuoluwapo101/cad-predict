@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Html, OrbitControls, useGLTF } from '@react-three/drei';
+import { Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 import { riskColour, formatProb, statusLabel, TARGETS } from '../lib/risk';
 import './HeartStage.css';
@@ -41,7 +41,7 @@ function CameraRig({ target, homeNonce }) {
       g.pos.copy(dir).multiplyScalar(OVERVIEW_DIST);
     }
     g.active = true;
-  }, [target, camera]);
+  }, [target, camera, controls]);
 
   // "Reset view": straight back to the front-on overview, whatever angle the user left it at.
   useEffect(() => {
@@ -50,7 +50,7 @@ function CameraRig({ target, homeNonce }) {
     g.look.set(0, 0, 0);
     g.pos.set(0, 0, OVERVIEW_DIST);
     g.active = true;
-  }, [homeNonce]);
+  }, [homeNonce, controls]);
 
   useEffect(() => {
     if (!controls) return undefined;
@@ -101,8 +101,55 @@ function Label({ code, result, position, active, onSelect }) {
   );
 }
 
-function Heart({ results, selected, onSelect, hovered, onHover, rotation, visible, dim, homeNonce }) {
+function PlaceholderHeart({ rotation }) {
+  const group = useRef();
+  const radians = useMemo(() => rotation.map((d) => THREE.MathUtils.degToRad(d)), [rotation]);
+
+  // Gentle resting pulse (~66 bpm) so the stage feels alive while the scan downloads.
+  useFrame(({ clock }) => {
+    if (!group.current) return;
+    const beat = Math.pow(Math.max(0, Math.sin(clock.getElapsedTime() * Math.PI * 2 * 1.1)), 3);
+    group.current.scale.setScalar(1 + beat * 0.05);
+  });
+
+  return (
+    <group ref={group} rotation={radians} raycast={() => null}>
+      <mesh raycast={() => null} scale={[1, 1.2, 0.95]}>
+        <sphereGeometry args={[1, 24, 18]} />
+        <meshStandardMaterial color="#C7A09D" roughness={0.55} metalness={0.02} transparent opacity={0.92} />
+      </mesh>
+      <mesh raycast={() => null} position={[-0.55, 0.95, 0]} rotation={[0, 0, 0.5]}>
+        <sphereGeometry args={[0.55, 20, 14]} />
+        <meshStandardMaterial color="#BC918F" roughness={0.55} metalness={0.02} transparent opacity={0.92} />
+      </mesh>
+      <mesh raycast={() => null} position={[0.55, 0.95, 0]} rotation={[0, 0, -0.5]}>
+        <sphereGeometry args={[0.55, 20, 14]} />
+        <meshStandardMaterial color="#BC918F" roughness={0.55} metalness={0.02} transparent opacity={0.92} />
+      </mesh>
+      <mesh raycast={() => null} position={[0.1, 1.55, -0.1]} rotation={[0, 0, -0.15]}>
+        <cylinderGeometry args={[0.28, 0.34, 0.9, 16]} />
+        <meshStandardMaterial color="#D6B5A6" roughness={0.55} metalness={0.02} transparent opacity={0.92} />
+      </mesh>
+    </group>
+  );
+}
+
+function StageLoader() {
+  const progress = useProgress((s) => s.progress);
+  const pct = Math.round(progress);
+  return (
+    <div className="stage-loader" role="status" aria-live="polite" aria-label={`Loading 3D heart model, ${pct} percent`}>
+      <span className="stage-pulse" aria-hidden="true" />
+      <span className="stage-pct num">{pct}%</span>
+      <span className="stage-loadmsg">Loading heart model{pct < 100 ? '…' : ''}</span>
+    </div>
+  );
+}
+
+function Heart({ results, selected, onSelect, hovered, onHover, rotation, visible, dim, homeNonce, onReady }) {
   const gltf = useGLTF(MODEL);
+
+  useEffect(() => { onReady?.(); });
 
   const model = useMemo(() => {
     const scene = gltf.scene.clone(true);
@@ -192,6 +239,7 @@ function Heart({ results, selected, onSelect, hovered, onHover, rotation, visibl
 export default function HeartStage({ results = null, selected = null, onSelect = () => {}, rotation = DEFAULT_ROTATION, visible = null, dim = true }) {
   const [hovered, setHovered] = useState(null);
   const [homeNonce, setHomeNonce] = useState(0);
+  const [ready, setReady] = useState(false);
   const reset = () => { onSelect(null); setHomeNonce((n) => n + 1); };
   return (
     <div className="stage">
@@ -202,13 +250,15 @@ export default function HeartStage({ results = null, selected = null, onSelect =
         <hemisphereLight args={['#ffffff', '#41546a', 0.8]} />
         <directionalLight position={[4, 5, 6]} intensity={2.2} />
         <directionalLight position={[-5, -2, -4]} intensity={0.8} color="#9bbcff" />
-        <Suspense fallback={<Html center><span className="stage-loading">Loading heart model</span></Html>}>
-          <Heart results={results} selected={selected} onSelect={onSelect} hovered={hovered} onHover={setHovered} rotation={rotation} visible={visible} dim={dim} homeNonce={homeNonce} />
+        {!ready && <PlaceholderHeart rotation={rotation} />}
+        <Suspense fallback={null}>
+          <Heart results={results} selected={selected} onSelect={onSelect} hovered={hovered} onHover={setHovered} rotation={rotation} visible={visible} dim={dim} homeNonce={homeNonce} onReady={() => setReady(true)} />
         </Suspense>
         <OrbitControls makeDefault enablePan={false} enableDamping dampingFactor={0.08}
-          minDistance={1.6} maxDistance={11} autoRotate={!selected} autoRotateSpeed={0.5} />
+          minDistance={1.6} maxDistance={11} autoRotate={!selected && ready} autoRotateSpeed={0.5} />
       </Canvas>
       </div>
+      {!ready && <StageLoader />}
       <small className="stage-credit">Anatomy: BodyParts3D, &copy; DBCLS, CC BY-SA 2.1 JP</small>
         <button type="button" className="stage-btn" onClick={reset} title="Back to the front view and clear the selection" aria-label="Reset the heart view">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" /></svg>

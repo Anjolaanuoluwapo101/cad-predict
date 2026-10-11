@@ -98,6 +98,20 @@ def predict(request: Request,
 
 # Single-service deploys (Docker): serve the built frontend. Registered last so the
 # API routes above always win. Skipped in local dev when no build exists.
+# Versioned files (hashed JS/CSS, the GLB) are immutable: browsers cache them for
+# a year, so repeat visits skip the 2.5 MB heart download entirely.
+_IMMUTABLE_PREFIXES = ("assets/", "models/")
+
+
+class _CachedStatic(StaticFiles):
+    async def get_response(self, path, scope):
+        resp = await super().get_response(path, scope)
+        # normpath uses backslashes on Windows dev machines; the container is Linux.
+        if resp.status_code == 200 and path.replace("\\", "/").startswith(_IMMUTABLE_PREFIXES):
+            resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return resp
+
+
 _DIST = Path(__file__).resolve().parents[1] / "frontend" / "dist"
 if _DIST.is_dir():
-    app.mount("/", StaticFiles(directory=_DIST, html=True), name="frontend")
+    app.mount("/", _CachedStatic(directory=_DIST, html=True), name="frontend")

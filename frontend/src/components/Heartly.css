@@ -34,14 +34,20 @@
 .h-err { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--risk-high); border-radius: var(--r-m); background: color-mix(in srgb, var(--risk-high) 10%, var(--surface)); font-size: var(--t-s); }
 .h-err button { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-size: var(--t-s); }
 .h-compose { display: flex; align-items: flex-end; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); flex: none; }
-.h-compose textarea { flex: 1; resize: none; max-height: 96px; padding: 9px 12px; background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: var(--r-m); color: var(--text); font: inherit; font-size: var(--t-s); line-height: 1.4; }
+.h-compose textarea { flex: 1; min-width: 0; resize: none; max-height: 96px; padding: 9px 12px; background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: var(--r-m); color: var(--text); font: inherit; font-size: var(--t-s); line-height: 1.4; }
 .h-send { display: inline-grid; place-items: center; min-width: 38px; height: 38px; padding: 0 14px; background: var(--accent); border: 0; border-radius: var(--r-pill); color: var(--accent-ink); font-weight: 600; font-size: var(--t-s); }
 .h-send:disabled { opacity: .4; cursor: default; }
 .h-setup { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 16px; font-size: var(--t-s); line-height: 1.5; overflow-y: auto; }
 .h-setup p { margin: 0; color: var(--text-2); } .h-setup strong { color: var(--text); }
 .h-setup input { padding: 10px 12px; background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: var(--r-m); color: var(--text); font: inherit; }
-.h-setup-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.h-setup-row { display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
 .h-setup-row a { color: var(--accent); }
 .h-foot { display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 8px 14px 10px; border-top: 1px solid var(--line); font-size: var(--t-xs); color: var(--text-3); line-height: 1.4; flex: none; }
 .h-foot .link { font-size: var(--t-xs); margin-left: auto; }
 @media (max-width: 960px) { .heartly { max-height: calc(100% - 56px); } .h-panel { width: 100%; } }
+@media (max-width: 560px) {
+  .heartly { right: 8px; bottom: 8px; left: 8px; align-items: stretch; max-width: none; }
+  .h-fab { align-self: flex-end; }
+  .h-panel { width: 100%; height: min(70vh, 480px); }
+  .h-compose textarea { font-size: 16px; }
+}

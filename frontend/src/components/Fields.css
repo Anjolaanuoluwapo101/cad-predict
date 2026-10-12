@@ -1,9 +1,9 @@
 .field { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .field:last-child { border-bottom: 0; }
-.f-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.f-head label { font-size: var(--t-m); font-weight: 500; }
+.f-head { display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 10px; }
+.f-head label { font-size: var(--t-m); font-weight: 500; min-width: 0; }
 .f-hint { display: inline-grid; place-items: center; width: 16px; height: 16px; margin-left: 8px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--text-3); font-size: 10px; cursor: help; position: relative; }
-.f-num { display: inline-flex; align-items: baseline; gap: 6px; }
+.f-num { display: inline-flex; align-items: baseline; gap: 6px; flex: none; }
 .f-num input { width: 84px; padding: 5px 8px; text-align: right; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-s); color: var(--text); font: inherit; font-weight: 600; font-variant-numeric: tabular-nums; }
 .f-num input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
 .f-num input::-webkit-inner-spin-button { appearance: none; }
@@ -22,6 +22,7 @@
 .f-slider input:active::-webkit-slider-thumb { transform: scale(1.15); }
 .f-tick { position: absolute; left: var(--tick); top: 3px; width: 2px; height: 18px; margin-left: -1px; background: var(--line-strong); border-radius: 2px; }
 .f-foot { min-height: 20px; margin-top: 4px; font-size: var(--t-xs); color: var(--text-3); }
+.f-msg { min-width: 0; }
 .f-foot button { padding: 0; background: none; border: 0; color: var(--accent); font-size: var(--t-xs); text-decoration: underline; text-underline-offset: 3px; }
 .f-foot .bad { color: var(--risk-high); } .f-foot .warn { color: color-mix(in srgb, var(--risk-mid) 70%, var(--text)); }
 .f-seg { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2px; padding: 3px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-m); }
@@ -41,7 +42,17 @@ button.f-hint:hover, button.f-hint[aria-expanded='true'] { border-color: var(--a
 @keyframes tipin { from { opacity: 0; } to { opacity: 1; } }
 .f-ref { position: absolute; top: 50%; height: 12px; transform: translateY(-50%); border-radius: 6px; background: color-mix(in srgb, var(--risk-low) 26%, transparent); }
 .f-out { position: absolute; top: 50%; z-index: 2; height: 4px; transform: translateY(-50%); pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 3px, var(--surface) 3px 5px); }
-.f-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.f-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px 10px; flex-wrap: wrap; }
 .unit-sw { display: inline-flex; flex: none; padding: 2px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-pill); }
 .f-foot .unit-sw button { padding: 2px 9px; border-radius: var(--r-pill); color: var(--text-3); font-size: var(--t-xs); text-decoration: none; }
 .f-foot .unit-sw button[aria-pressed='true'] { background: var(--accent); color: var(--accent-ink); }
+@media (max-width: 480px) {
+  .f-head { flex-wrap: wrap; row-gap: 8px; }
+  .f-num input { width: 72px; }
+  .f-seg { gap: 2px; }
+  .f-seg button { padding: 8px 4px; font-size: var(--t-xs); overflow: hidden; text-overflow: ellipsis; }
+  .field.is-row { grid-template-columns: 1fr; gap: 10px; }
+  .f-num { width: 100%; }
+  .f-num input { flex: 1; width: auto; min-width: 0; }
+  .f-foot { row-gap: 8px; }
+}

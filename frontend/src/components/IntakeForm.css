@@ -36,7 +36,7 @@
 .nav .solid { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); margin-left: auto; }
 .nav button:disabled { opacity: .45; cursor: not-allowed; }
 
-.sub-block { margin-top: 22px; padding: 4px 0 0 16px; border-left: 3px solid var(--accent); }
+.sub-block { margin-top: 22px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-m); background: var(--surface-2); }
 .sub-block h3 { font-size: var(--t-xl); }
 .sub-block > p { margin: 4px 0 2px; color: var(--text-2); font-size: var(--t-s); }
 .sub-block .field { border-bottom: 0; }
@@ -45,3 +45,13 @@
 .prog .reset-all:hover:not(:disabled) { color: var(--text); }
 .prog .reset-all.armed { color: var(--risk-high); font-weight: 600; text-decoration: none; }
 .prog .reset-all:disabled { opacity: .4; cursor: default; text-decoration: none; }
+@media (max-width: 560px) {
+  .stepper { gap: 4px; padding-bottom: 10px; }
+  .arrow { width: 30px; height: 30px; }
+  .steps button { padding: 6px 10px 6px 7px; font-size: var(--t-xs); }
+  .sect { padding-right: 0; }
+  .sect h2 { font-size: var(--t-xl); margin-top: 10px; }
+  .nav { flex-wrap: wrap; }
+  .nav button { flex: 1 1 140px; padding: 12px 16px; }
+  .sub-block { padding: 12px; margin-top: 16px; }
+}

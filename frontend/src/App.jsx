@@ -81,11 +81,11 @@ export default function App() {
   return (
     <div className="shell wide">
       <header className="top">
-        <span className="brand"><HeartlyMark size={30} />Coronary Risk Assessment</span>
+        <span className="brand"><HeartlyMark size={30} />Heartly</span>
         <div className="top-actions">
           <HistoryMenu runs={runs} activeId={activeRunId} error={histError} onLoad={loadSavedRun} onDelete={dropSavedRun} onClear={dropAllRuns} />
           <button className="themebtn" onClick={toggle} aria-label="Switch colour theme">
-            {theme === 'dark' ? <Sun /> : <Moon />}{theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            {theme === 'dark' ? <Sun /> : <Moon />}<span className="btn-label">{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
           </button>
         </div>
       </header>

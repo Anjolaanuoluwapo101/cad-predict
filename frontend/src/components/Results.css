@@ -8,7 +8,7 @@
 
 /* ---- tabs and target chips ---- */
 .tabs { display: flex; gap: 4px; padding: 4px; flex: none; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-pill); }
-.tabs button { flex: 1; padding: 8px 10px; border: 0; background: none; border-radius: var(--r-pill); color: var(--text-2); font-size: var(--t-s); white-space: nowrap; transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
+.tabs button { flex: 1; min-width: 0; padding: 8px 10px; border: 0; background: none; border-radius: var(--r-pill); color: var(--text-2); font-size: var(--t-s); white-space: nowrap; transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
 .tabs button:hover { color: var(--text); }
 .tabs button.on { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: var(--shadow-1); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; flex: none; }
@@ -42,7 +42,7 @@
 .vc-tools button { display: inline-grid; place-items: center; padding: 5px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-s); color: var(--text-2); font-size: var(--t-xs); }
 .vc-tools button[aria-pressed='true'] { color: var(--accent); }
 .vc-tools button:hover { border-color: var(--line-strong); }
-.res-tools { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: var(--t-xs); color: var(--text-2); }
+.res-tools { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; font-size: var(--t-xs); color: var(--text-2); }
 .chk { display: flex; gap: 8px; align-items: center; } .chk input { accent-color: var(--accent); }
 .how { border: 1px solid var(--line); border-radius: var(--r-m); background: var(--surface-2); font-size: var(--t-s); }
 .how summary { padding: 10px 14px; cursor: pointer; font-weight: 500; }
@@ -59,10 +59,10 @@
 .rbar-cut { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--text); opacity: .75; border-radius: 1px; }
 .rbar-scale { position: relative; height: 16px; margin-top: 5px; }
 .rbar-scale span { position: absolute; transform: translateX(-50%); white-space: nowrap; font-size: var(--t-xs); color: var(--text-3); }
-.big { font-family: var(--font-display); font-size: 2.1rem; line-height: 1; color: var(--text); }
+.big { font-family: var(--font-body); font-weight: 650; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; font-size: 2.1rem; line-height: 1; color: var(--text); }
 .big-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; }
 .overall .big { font-size: 2.8rem; }
-.res-actions { display: inline-flex; gap: 16px; align-items: center; }
+.res-actions { display: inline-flex; gap: 16px; align-items: center; flex-wrap: wrap; row-gap: 8px; }
 .save-btn { padding: 8px 18px; background: var(--accent); border: 1px solid var(--accent); border-radius: var(--r-pill); color: var(--accent-ink); font-size: var(--t-s); font-weight: 600; transition: opacity var(--dur) var(--ease); }
 .save-btn:hover:not(:disabled) { opacity: .88; }
 .save-btn.is-saved, .save-btn:disabled { opacity: .55; cursor: default; }
@@ -93,7 +93,7 @@
 .pr { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .pr-main { display: flex; flex-direction: column; gap: 2px; }
 .pr-name { font-size: var(--t-s); font-weight: 500; }
-.pr-val { font-size: var(--t-l); font-family: var(--font-display); line-height: 1.15; }
+.pr-val { font-size: var(--t-l); font-family: var(--font-body); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; line-height: 1.15; }
 .pr-ref { font-size: var(--t-xs); color: var(--text-3); }
 .pr-ref small { display: block; font-size: var(--t-xs); }
 .pr-ref.above, .pr-ref.below { color: var(--text-2); font-weight: 500; }
@@ -102,11 +102,36 @@
 .pr-pct { font-size: var(--t-xs); color: var(--text-2); text-align: center; }
 
 /* ---- notices ---- */
-.notice { display: flex; gap: 12px; padding: 14px; border: 1px solid color-mix(in srgb, var(--risk-mid) 55%, var(--line)); border-left: 4px solid var(--risk-mid); border-radius: var(--r-m); background: color-mix(in srgb, var(--risk-mid) 11%, var(--surface)); font-size: var(--t-s); line-height: 1.5; }
-.notice svg { flex: none; margin-top: 1px; color: color-mix(in srgb, var(--risk-mid) 80%, var(--text)); }
+.notice { display: flex; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-m); background: var(--surface-2); font-size: var(--t-s); line-height: 1.5; }
+.notice svg { flex: none; margin-top: 1px; color: var(--text-3); }
 .notice strong { display: block; margin-bottom: 2px; }
 .notice p { margin: 0; color: var(--text-2); }
 .notice details { margin-top: 8px; } .notice summary { cursor: pointer; color: var(--accent); font-size: var(--t-xs); }
 .notice .used { margin-top: 6px; font-size: var(--t-xs); }
-.notice.disclaimer { flex: none; padding: 10px 14px; }
-.notice.disclaimer p { font-size: var(--t-xs); }
+.notice > div { min-width: 0; }
+@media (max-width: 480px) {
+  .res-top { flex-wrap: wrap; gap: 4px 12px; }
+  .res-top h2 { font-size: var(--t-xl); }
+  .res-actions { gap: 12px; }
+  .save-btn { padding: 7px 14px; }
+  .tabs { overflow-x: auto; }
+  .tabs button { flex: 1 0 auto; padding: 8px 12px; font-size: var(--t-xs); }
+  .overall { padding: 14px; }
+  .overall .big { font-size: 2.2rem; }
+  .big { font-size: 1.7rem; }
+  .overall-name { font-size: var(--t-l); }
+  .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+  .chip { flex: none; }
+  .sh-head, .sh li { grid-template-columns: minmax(0, 1fr) 44px; }
+  .sh-head span:first-child, .sh-head span:last-child { display: none; }
+  .sh-head .sh-axis { grid-column: 1 / -1; }
+  .sh li .sh-bar { grid-column: 1 / -1; order: 2; }
+  .sh-pct { grid-column: 2; grid-row: 1; }
+  .pr { grid-template-columns: 1fr; gap: 8px; }
+  .pr-pct { text-align: left; }
+  .res-body { padding-right: 0; }
+}
+@media (max-width: 560px) {
+  .vgrid { grid-template-columns: 1fr; }
+}
+

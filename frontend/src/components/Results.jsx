@@ -8,9 +8,7 @@ import { fieldMap } from '../lib/present';
 import './Results.css';
 
 const TABS = [['overview', 'Overview'], ['why', 'Why this score'], ['measures', 'Measurements']];
-const Warn = () => (<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10.3 3.9L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" /><path d="M12 9v4M12 17h.01" /></svg>);
-
-// The assessment dashboard: overview cards, SHAP explanation, measurements. The disclaimer never scrolls away.
+// The assessment dashboard: overview cards, SHAP explanation, measurements.
 export default function Results({ data, labels, fields, selected, onSelect, visible, onVisible, onSolo, onShowAll, dim, onDim, onEdit, onNew, onSave, saved }) {
   const [tab, setTab] = useState('overview');
   const target = selected ?? 'CAD';
@@ -49,11 +47,6 @@ export default function Results({ data, labels, fields, selected, onSelect, visi
           onSolo={onSolo} onShowAll={onShowAll} dim={dim} onDim={onDim} />}
         {tab === 'why' && <ShapChart target={target} t={t} labels={labels} fmap={fmap} />}
         {tab === 'measures' && <Physiology target={target} t={t} labels={labels} fmap={fmap} used={used} />}
-      </div>
-
-      <div className="notice disclaimer" role="note">
-        <Warn />
-        <div><strong>Decision support only</strong><p>{data.disclaimer}</p></div>
       </div>
     </div>
   );

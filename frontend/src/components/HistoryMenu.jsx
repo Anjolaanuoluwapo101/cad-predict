@@ -33,7 +33,7 @@ export default function HistoryMenu({ runs, activeId, error, onLoad, onDelete, o
       <button type="button" className="hist-btn" aria-expanded={open} aria-haspopup="listbox" aria-label={`Saved runs, ${runs.length} of ${HISTORY_MAX}`}
         onClick={() => setOpen((o) => !o)}>
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" /><path d="M12 7v5l3.5 2" /></svg>
-        History ({runs.length}/{HISTORY_MAX})
+        <span className="btn-label">History</span> <span className="num">({runs.length}/{HISTORY_MAX})</span>
         <svg className={`chev ${open ? 'up' : ''}`} viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
       </button>
       {open && (

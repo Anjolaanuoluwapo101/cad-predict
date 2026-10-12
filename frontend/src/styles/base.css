@@ -1,5 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
+html, body { overflow-x: clip; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
   font: 400 var(--t-m)/1.55 var(--font-body);
